@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141721" />
+      <stop offset="100%" stop-color="#08090d" />
+    </linearGradient>
+    <linearGradient id="grad-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="grad-steel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#64748b" />
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded squircles -->
+  <rect width="512" height="512" rx="128" fill="url(#grad-bg)" />
+  <rect x="8" y="8" width="496" height="496" rx="120" fill="none" stroke="#222838" stroke-width="4" />
+  
+  <!-- Outer barbell hexagonal plates -->
+  <path d="M120 176 L160 176 L180 200 L180 312 L160 336 L120 336 L100 312 L100 200 Z" fill="#1e2433" stroke="url(#grad-steel)" stroke-width="6" />
+  <path d="M392 176 L352 176 L332 200 L332 312 L352 336 L392 336 L412 312 L412 200 Z" fill="#1e2433" stroke="url(#grad-steel)" stroke-width="6" />
+  
+  <!-- Central barbell shaft -->
+  <rect x="60" y="244" width="392" height="24" rx="6" fill="url(#grad-steel)" />
+  
+  <!-- Center IRONMIND Diamond 'M' Emblem with Energy Bolt -->
+  <polygon points="256,120 360,256 256,392 152,256" fill="#0d111a" stroke="url(#grad-accent)" stroke-width="8" stroke-linejoin="round" />
+  <path d="M200 310 L228 200 L256 264 L284 200 L312 310" fill="none" stroke="url(#grad-accent)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Subtle accent dot -->
+  <circle cx="256" cy="180" r="8" fill="#fbbf24" />
+</svg>

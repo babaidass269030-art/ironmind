@@ -1,0 +1,6 @@
+{
+  "name": "IRONMIND",
+  "description": "Premium mobile-first fitness companion and workout progression tracker.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
