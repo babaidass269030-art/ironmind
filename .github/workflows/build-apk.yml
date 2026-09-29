@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Amazon Signed APK
 
 on:
   workflow_dispatch:
@@ -40,20 +40,37 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Fix Gradle Memory
+      - name: Fix Kotlin Duplicate & Gradle Config
         run: |
           cd android
           echo "org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=512m" >> gradle.properties
+          
+          # Kotlin ডুপ্লিকেট ক্লাস আটকাতে কনফিগারেশন যোগ
+          cat << 'EOF' >> app/build.gradle
 
-      - name: Build Debug APK
+          configurations.all {
+              exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+              exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+          }
+          EOF
+
+      - name: Build Unsigned Release APK
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
 
-      - name: Upload APK Artifact
+      - name: Sign APK for Amazon Appstore
+        run: |
+          # রিলিজ সাইন করার জন্য অটোমেটিক কীস্টোর তৈরি
+          keytool -genkey -v -keystore release.keystore -alias ironmind -keyalg RSA -keysize 2048 -validity 10000 -storepass ironmind123 -keypass ironmind123 -dname "CN=IronMind, OU=App, O=IronMind, L=Kolkata, ST=WB, C=IN"
+          
+          # আনসাইনড এপিকে সাইন করা
+          $ANDROID_HOME/build-tools/34.0.0/apksigner sign --ks release.keystore --ks-key-alias ironmind --ks-pass pass:ironmind123 --key-pass pass:ironmind123 --out IronMind-Amazon-Release.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
+
+      - name: Upload Amazon Ready APK
         uses: actions/upload-artifact@v4
         with:
-          name: IronMind-Debug-APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: IronMind-Amazon-Release-APK
+          path: IronMind-Amazon-Release.apk
           
