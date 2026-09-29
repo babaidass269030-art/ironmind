@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Accept Android SDK Licenses
         run: |
@@ -40,18 +40,16 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Fix Android Manifest & Gradle Properties
+      - name: Fix Gradle Memory
         run: |
           cd android
           echo "org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=512m" >> gradle.properties
-          echo "android.useAndroidX=true" >> gradle.properties
-          echo "android.enableJetifier=true" >> gradle.properties
 
       - name: Build Debug APK
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleDebug --info
+          ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
