@@ -23,6 +23,7 @@ import { ProfileScreen } from './components/screens/ProfileScreen';
 import { OnboardingScreen } from './components/screens/OnboardingScreen';
 import { SplashScreen } from './components/common/SplashScreen';
 import { InterstitialAdModal } from './components/ads/InterstitialAdModal';
+import { AdBanner } from './components/ads/AdBanner';
 
 type AppView =
   | 'main'
@@ -232,7 +233,6 @@ export default function App() {
 
   // Finish Workout -> Interstitial Ad -> Show Summary
   const handleFinishWorkout = (completedSession: WorkoutSession) => {
-    // Find previous session for comparison
     const prior = sessions
       .filter((s) => s.isCompleted && s.id !== completedSession.id)
       .find((s) => s.templateId === completedSession.templateId || s.name === completedSession.name);
@@ -286,7 +286,6 @@ export default function App() {
   }
 
   // ACTIVE VIEWS
-  // 1. Live Workout Screen
   if (currentView === 'live_workout' && activeSession) {
     return (
       <LiveWorkoutScreen
@@ -301,7 +300,6 @@ export default function App() {
     );
   }
 
-  // 2. Workout Summary Screen
   if (currentView === 'workout_summary' && summarySession) {
     return (
       <WorkoutSummaryScreen
@@ -323,7 +321,6 @@ export default function App() {
     );
   }
 
-  // 3. Workout Builder Screen
   if (currentView === 'workout_builder') {
     return (
       <WorkoutBuilderScreen
@@ -343,7 +340,6 @@ export default function App() {
     );
   }
 
-  // 4. Exercise Library Screen (standalone or picker)
   if (currentView === 'exercise_library') {
     return (
       <ExerciseLibraryScreen
@@ -352,7 +348,6 @@ export default function App() {
         profile={profile}
         onClose={() => {
           setExercisePickerCallback(null);
-          // Return to previous view if picking
           if (activeSession) {
             setCurrentView('live_workout');
           } else if (editingTemplate !== null) {
@@ -384,7 +379,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#090a0f] text-slate-100 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full pb-2">
         {currentTab === 'home' && (
           <HomeScreen
             profile={profile}
@@ -456,6 +451,11 @@ export default function App() {
         )}
       </main>
 
+      {/* PERSISTENT BANNER AD (সব ট্যাবেই দেখাবে) */}
+      <div className="w-full">
+        <AdBanner />
+      </div>
+
       {/* ATHLETIC BOTTOM NAVIGATION */}
       <BottomNav
         currentTab={currentTab}
@@ -464,4 +464,4 @@ export default function App() {
       />
     </div>
   );
-}
+      }
