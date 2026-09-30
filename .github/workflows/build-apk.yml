@@ -29,26 +29,33 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets --legacy-peer-deps
+          npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
 
       - name: Build Web App
         run: npm run build
 
-      - name: Initialize Capacitor Android & Generate Icons
+      - name: Initialize Capacitor Android
         run: |
           echo '{ "appId": "com.ironmind.workout", "appName": "IronMind", "webDir": "dist" }' > capacitor.config.json
           npx cap add android
-          
-          # আপনার আপলোড করা icon.png থেকে স্বয়ংক্রিয়ভাবে সব আইকন তৈরি করা
-          if [ -f "icon.png" ]; then
-            mkdir -p assets
-            cp icon.png assets/icon-only.png
-            cp icon.png assets/icon-foreground.png
-            cp icon.png assets/icon-background.png
-            npx @capacitor/assets generate --android || true
-          fi
-          
           npx cap sync android
+
+      - name: Force Custom App Icon
+        run: |
+          # icon.png ফাইলটি সরাসরি অ্যান্ড্রয়েডের সব রেজোলিউশনে রিপ্লেস করা
+          if [ -f "icon.png" ]; then
+            RES_DIR="android/app/src/main/res"
+            for dir in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+              mkdir -p "$RES_DIR/$dir"
+              cp -f icon.png "$RES_DIR/$dir/ic_launcher.png"
+              cp -f icon.png "$RES_DIR/$dir/ic_launcher_round.png"
+              cp -f icon.png "$RES_DIR/$dir/ic_launcher_foreground.png"
+            done
+            echo "Icon copied successfully!"
+          else
+            echo "icon.png not found!"
+            exit 1
+          fi
 
       - name: Fix Kotlin Duplicate & Gradle Config
         run: |
