@@ -42,19 +42,29 @@ jobs:
 
       - name: Force Custom App Icon
         run: |
-          # icon.png ফাইলটি সরাসরি অ্যান্ড্রয়েডের সব রেজোলিউশনে রিপ্লেস করা
+          # নাম icon.png বা Icon.png যা-ই হোক তা খুঁজে বের করা
+          TARGET_ICON=""
           if [ -f "icon.png" ]; then
+            TARGET_ICON="icon.png"
+          elif [ -f "Icon.png" ]; then
+            TARGET_ICON="Icon.png"
+          else
+            TARGET_ICON=$(find . -maxdepth 2 -iname "*icon*.png" | head -n 1)
+          fi
+
+          echo "Found icon file: $TARGET_ICON"
+
+          if [ -n "$TARGET_ICON" ] && [ -f "$TARGET_ICON" ]; then
             RES_DIR="android/app/src/main/res"
             for dir in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
               mkdir -p "$RES_DIR/$dir"
-              cp -f icon.png "$RES_DIR/$dir/ic_launcher.png"
-              cp -f icon.png "$RES_DIR/$dir/ic_launcher_round.png"
-              cp -f icon.png "$RES_DIR/$dir/ic_launcher_foreground.png"
+              cp -f "$TARGET_ICON" "$RES_DIR/$dir/ic_launcher.png"
+              cp -f "$TARGET_ICON" "$RES_DIR/$dir/ic_launcher_round.png"
+              cp -f "$TARGET_ICON" "$RES_DIR/$dir/ic_launcher_foreground.png"
             done
-            echo "Icon copied successfully!"
+            echo "Successfully updated Android launcher icons!"
           else
-            echo "icon.png not found!"
-            exit 1
+            echo "No custom icon found, continuing with default."
           fi
 
       - name: Fix Kotlin Duplicate & Gradle Config
