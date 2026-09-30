@@ -379,7 +379,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#090a0f] text-slate-100 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
-      <main className="flex-1 w-full pb-2">
+      {/* স্ক্রিনের কনটেন্ট যাতে ব্যানারের পেছনে না লুকায়, তার জন্য pb-36 দেওয়া হয়েছে */}
+      <main className="flex-1 w-full pb-36">
         {currentTab === 'home' && (
           <HomeScreen
             profile={profile}
@@ -451,8 +452,8 @@ export default function App() {
         )}
       </main>
 
-      {/* PERSISTENT BANNER AD (সব ট্যাবেই দেখাবে) */}
-      <div className="w-full">
+      {/* PERSISTENT FIXED BANNER AD (সব স্ক্রিনের নিচে ভেসে থাকবে) */}
+      <div className="fixed bottom-16 left-0 right-0 z-40 w-full bg-[#090a0f]">
         <AdBanner />
       </div>
 
@@ -463,5 +464,6 @@ export default function App() {
         hasActiveSession={!!activeSession}
       />
     </div>
-  );
-      }
+   );
+}
+}
