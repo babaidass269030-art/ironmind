@@ -21,7 +21,6 @@ import { UserProfile, FitnessGoal, AppDataBackup } from '../../types';
 import { StorageService } from '../../services/storage';
 import { UnitConverter } from '../../utils/unitConverter';
 import { PWAInstallButton } from '../common/PWAInstallButton';
-import { AD_CONFIG } from '../../config/adConfig';
 
 interface ProfileScreenProps {
   profile: UserProfile;
@@ -119,7 +118,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         </div>
       </div>
 
-      {/* PWA In-App Install Banner (Section 66 & pwa-integration skill) */}
+      {/* PWA In-App Install Banner */}
       <div className="mb-5">
         <PWAInstallButton />
       </div>
@@ -321,7 +320,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         </div>
       </div>
 
-      {/* DATA BACKUP & RESTORE (SECTION 36 & 68) */}
+      {/* DATA BACKUP & RESTORE */}
       <div className="rounded-2xl bg-[#11131a] border border-slate-800/80 p-4 mb-5 space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
           Data Management & Backup
@@ -394,36 +393,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         </button>
       </div>
 
-      {/* AD NETWORK PLACEHOLDER & CONFIGURATION (UNITY ADS) */}
-      <div className="p-4 rounded-2xl bg-[#11131a] border border-slate-800/80 mb-5">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            Ad Network Integration
-          </span>
-          <span className="px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 font-mono text-[10px] font-bold uppercase">
-            Unity Ads Active
-          </span>
-        </div>
-        <p className="text-xs text-slate-300 mb-3">
-          Unity Ads is configured as the active ad provider. Game ID (Android): <code className="text-amber-400 font-mono">800382946</code>.
-        </p>
-        <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
-          <div className="p-2 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-500 block text-[9px]">TOOLS BANNER</span>
-            <span className="text-slate-300 truncate block font-bold text-white" title={AD_CONFIG.unity.bannerPlacementId}>
-              {AD_CONFIG.unity.bannerPlacementId}
-            </span>
-          </div>
-          <div className="p-2 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-500 block text-[9px]">FINISH INTERSTITIAL</span>
-            <span className="text-slate-300 truncate block font-bold text-amber-400" title={AD_CONFIG.unity.interstitialPlacementId}>
-              {AD_CONFIG.unity.interstitialPlacementId}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* PRIVACY MODAL (SECTION 50) */}
+      {/* PRIVACY MODAL */}
       {showPrivacyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in">
           <div className="w-full max-w-sm rounded-3xl bg-[#11131a] border border-slate-800 p-6 text-slate-100 shadow-2xl max-h-[85vh] flex flex-col justify-between">
@@ -472,7 +442,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         </div>
       )}
 
-      {/* ABOUT MODAL (SECTION 51) */}
+      {/* ABOUT MODAL */}
       {showAboutModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in">
           <div className="w-full max-w-sm rounded-3xl bg-[#11131a] border border-slate-800 p-6 text-slate-100 shadow-2xl">
@@ -514,7 +484,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         </div>
       )}
 
-      {/* DANGEROUS RESET ALL DATA MODAL (SECTION 37) */}
+      {/* DANGEROUS RESET ALL DATA MODAL */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in">
           <div className="w-full max-w-sm rounded-3xl bg-[#11131a] border border-rose-500/50 p-6 text-slate-100 shadow-2xl">
