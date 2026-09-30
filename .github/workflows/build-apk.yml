@@ -29,15 +29,25 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets --legacy-peer-deps
 
       - name: Build Web App
         run: npm run build
 
-      - name: Initialize Capacitor Android
+      - name: Initialize Capacitor Android & Generate Icons
         run: |
           echo '{ "appId": "com.ironmind.workout", "appName": "IronMind", "webDir": "dist" }' > capacitor.config.json
           npx cap add android
+          
+          # আপনার আপলোড করা icon.png থেকে স্বয়ংক্রিয়ভাবে সব আইকন তৈরি করা
+          if [ -f "icon.png" ]; then
+            mkdir -p assets
+            cp icon.png assets/icon-only.png
+            cp icon.png assets/icon-foreground.png
+            cp icon.png assets/icon-background.png
+            npx @capacitor/assets generate --android || true
+          fi
+          
           npx cap sync android
 
       - name: Fix Kotlin Duplicate & Gradle Config
@@ -45,7 +55,6 @@ jobs:
           cd android
           echo "org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=512m" >> gradle.properties
           
-          # Kotlin ডুপ্লিকেট ক্লাস আটকাতে কনফিগারেশন যোগ
           cat << 'EOF' >> app/build.gradle
 
           configurations.all {
@@ -62,10 +71,7 @@ jobs:
 
       - name: Sign APK for Amazon Appstore
         run: |
-          # রিলিজ সাইন করার জন্য অটোমেটিক কীস্টোর তৈরি
           keytool -genkey -v -keystore release.keystore -alias ironmind -keyalg RSA -keysize 2048 -validity 10000 -storepass ironmind123 -keypass ironmind123 -dname "CN=IronMind, OU=App, O=IronMind, L=Kolkata, ST=WB, C=IN"
-          
-          # আনসাইনড এপিকে সাইন করা
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign --ks release.keystore --ks-key-alias ironmind --ks-pass pass:ironmind123 --key-pass pass:ironmind123 --out IronMind-Amazon-Release.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Upload Amazon Ready APK
