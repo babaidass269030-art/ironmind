@@ -616,10 +616,8 @@ export const ToolsScreen: React.FC<ToolsScreenProps> = ({ profile }) => {
             )}
           </div>
         </div>
-      )}
-
-      {/* AdMob / Start.io Banner Placeholder (Swap IDs in /src/config/adConfig.ts) */}
-      <AdBanner placement="tools_bottom" />
+      
+    )}
     </div>
   );
 };
