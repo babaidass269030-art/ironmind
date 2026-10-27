@@ -25,10 +25,8 @@
   <!-- Central barbell shaft -->
   <rect x="60" y="244" width="392" height="24" rx="6" fill="url(#grad-steel)" />
   
-  <!-- Center IRONMIND Diamond 'M' Emblem with Energy Bolt -->
+  <!-- Center IronCore Diamond Core Emblem -->
   <polygon points="256,120 360,256 256,392 152,256" fill="#0d111a" stroke="url(#grad-accent)" stroke-width="8" stroke-linejoin="round" />
-  <path d="M200 310 L228 200 L256 264 L284 200 L312 310" fill="none" stroke="url(#grad-accent)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
-  
-  <!-- Subtle accent dot -->
-  <circle cx="256" cy="180" r="8" fill="#fbbf24" />
+  <path d="M305 205 L238 205 L208 256 L238 307 L305 307" fill="none" stroke="url(#grad-accent)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="265" cy="256" r="12" fill="#fbbf24" />
 </svg>

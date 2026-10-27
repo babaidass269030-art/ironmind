@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "IRONMIND Fitness Companion",
-  "short_name": "IRONMIND",
+  "name": "IronCore Fitness: Gym Workout Tracker",
+  "short_name": "IronCore",
   "description": "Premium mobile-first fitness companion and workout progression tracker.",
   "start_url": "/",
   "scope": "/",

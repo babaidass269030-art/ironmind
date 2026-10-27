@@ -36,7 +36,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       {/* Top subtle spacing */}
       <div className="pt-8 flex items-center gap-1.5 opacity-60">
         <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase">
-          IRONMIND OS · v1.0.0
+          IRONCORE FITNESS · v1.0.1
         </span>
       </div>
 
@@ -48,7 +48,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-orange-500/30 to-amber-500/20 rounded-full blur-2xl animate-pulse" />
 
           <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-br from-[#1a1e2b] via-[#121520] to-[#0c0e14] border border-amber-500/40 flex items-center justify-center shadow-2xl shadow-amber-500/10">
-            {/* Athletic barbell / thunder emblem */}
+            {/* Athletic barbell / core emblem */}
             <svg
               className="w-14 h-14"
               viewBox="0 0 512 512"
@@ -77,7 +77,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               />
               {/* Shaft */}
               <rect x="60" y="244" width="392" height="24" rx="6" fill="#94a3b8" />
-              {/* Central Diamond M */}
+              {/* Central Diamond Core */}
               <polygon
                 points="256,120 360,256 256,392 152,256"
                 fill="#0d111a"
@@ -86,25 +86,26 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 strokeLinejoin="round"
               />
               <path
-                d="M200 310 L228 200 L256 264 L284 200 L312 310"
+                d="M305 205 L238 205 L208 256 L238 307 L305 307"
                 fill="none"
                 stroke="url(#splash-grad)"
                 strokeWidth="20"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
+              <circle cx="265" cy="256" r="14" fill="#fbbf24" />
             </svg>
           </div>
         </div>
 
         {/* Wordmark */}
         <h1 className="text-4xl font-black font-display tracking-tight text-white mb-1.5">
-          IRON<span className="text-amber-400">MIND</span>
+          IRON<span className="text-amber-400">CORE</span>
         </h1>
 
         {/* Tagline */}
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-400 mb-3">
-          Forged in Discipline
+          Gym Workout Tracker
         </p>
 
         {/* Sub-badge */}

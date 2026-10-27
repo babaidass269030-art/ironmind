@@ -36,7 +36,7 @@ jobs:
 
       - name: Initialize Capacitor Android
         run: |
-          echo '{ "appId": "com.ironmind.workout", "appName": "IronMind", "webDir": "dist" }' > capacitor.config.json
+          echo '{ "appId": "com.ironcore.fitnesstracker", "appName": "IronCore Fitness: Gym Workout Tracker", "webDir": "dist" }' > capacitor.config.json
           npx cap add android
           npx cap sync android
 
@@ -88,12 +88,12 @@ jobs:
 
       - name: Sign APK for Amazon Appstore
         run: |
-          keytool -genkey -v -keystore release.keystore -alias ironmind -keyalg RSA -keysize 2048 -validity 10000 -storepass ironmind123 -keypass ironmind123 -dname "CN=IronMind, OU=App, O=IronMind, L=Kolkata, ST=WB, C=IN"
-          $ANDROID_HOME/build-tools/34.0.0/apksigner sign --ks release.keystore --ks-key-alias ironmind --ks-pass pass:ironmind123 --key-pass pass:ironmind123 --out IronMind-Amazon-Release.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
+          keytool -genkey -v -keystore release.keystore -alias ironcore -keyalg RSA -keysize 2048 -validity 10000 -storepass ironcore123 -keypass ironcore123 -dname "CN=IronCore, OU=App, O=IronCore Fitness, L=Kolkata, ST=WB, C=IN"
+          $ANDROID_HOME/build-tools/34.0.0/apksigner sign --ks release.keystore --ks-key-alias ironcore --ks-pass pass:ironcore123 --key-pass pass:ironcore123 --out IronCore-Amazon-Release.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Upload Amazon Ready APK
         uses: actions/upload-artifact@v4
         with:
-          name: IronMind-Amazon-Release-APK
-          path: IronMind-Amazon-Release.apk
+          name: IronCore-Amazon-Release-APK
+          path: IronCore-Amazon-Release.apk
           

@@ -4,7 +4,7 @@ export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   {
     id: 'first-workout',
     title: 'First Step',
-    description: 'Complete your first workout session in IRONMIND.',
+    description: 'Complete your first workout session in IronCore Fitness.',
     badge: '🏋️',
     tier: 'bronze',
     isUnlocked: false,

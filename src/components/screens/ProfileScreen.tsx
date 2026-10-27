@@ -69,7 +69,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ironmind_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `ironcore_backup_${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -376,7 +376,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         >
           <div className="flex items-center gap-2 text-slate-200 font-semibold">
             <Info className="w-4 h-4 text-amber-400" />
-            <span>About IRONMIND</span>
+            <span>About IronCore Fitness</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-500" />
         </button>
@@ -416,7 +416,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                   <strong>Your fitness data is stored locally on this device.</strong>
                 </p>
                 <p>
-                  IRONMIND is designed with a strict local-first architecture. We do not operate user databases, backend telemetry servers, or account tracking scripts.
+                  IronCore Fitness is designed with a strict local-first architecture. We do not operate user databases, backend telemetry servers, or account tracking scripts.
                 </p>
                 <p>
                   All workout sets, body measurements, personal records, and routines reside inside your browser’s local storage. This means:
@@ -449,7 +449,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Info className="w-4 h-4 text-amber-400" />
-                About IRONMIND
+                About IronCore Fitness
               </h3>
               <button
                 onClick={() => setShowAboutModal(false)}
@@ -461,8 +461,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
 
             <div className="space-y-3 text-xs text-slate-300 leading-relaxed mb-6">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-amber-400">IRONMIND</span>
-                <span className="font-mono text-slate-500 text-[10px]">v1.0.0 (Production)</span>
+                <span className="font-bold text-amber-400">IronCore Fitness</span>
+                <span className="font-mono text-slate-500 text-[10px]">v1.0.1 (Production)</span>
               </div>
               <p>
                 Engineered for serious lifters who demand clean, rapid set tracking, progressive overload calculation, and zero cloud friction inside the gym.

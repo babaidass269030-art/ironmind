@@ -15,17 +15,17 @@ import { INITIAL_ACHIEVEMENTS } from '../data/defaultAchievements';
 import { DEFAULT_ROUTINES } from '../data/defaultRoutines';
 
 const STORAGE_KEYS = {
-  PROFILE: 'ironmind_profile',
-  CUSTOM_EXERCISES: 'ironmind_custom_exercises',
-  FAVORITES: 'ironmind_favorites',
-  TEMPLATES: 'ironmind_templates',
-  SESSIONS: 'ironmind_sessions',
-  PRS: 'ironmind_prs',
-  MEASUREMENTS: 'ironmind_measurements',
-  ROUTINES: 'ironmind_routines',
-  ACHIEVEMENTS: 'ironmind_achievements',
-  ACTIVE_SESSION: 'ironmind_active_session',
-  REST_TIMER_STATE: 'ironmind_rest_timer'
+  PROFILE: 'ironcore_profile',
+  CUSTOM_EXERCISES: 'ironcore_custom_exercises',
+  FAVORITES: 'ironcore_favorites',
+  TEMPLATES: 'ironcore_templates',
+  SESSIONS: 'ironcore_sessions',
+  PRS: 'ironcore_prs',
+  MEASUREMENTS: 'ironcore_measurements',
+  ROUTINES: 'ironcore_routines',
+  ACHIEVEMENTS: 'ironcore_achievements',
+  ACTIVE_SESSION: 'ironcore_active_session',
+  REST_TIMER_STATE: 'ironcore_rest_timer'
 };
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -47,7 +47,15 @@ const DEFAULT_PROFILE: UserProfile = {
 
 function safeGet<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(key);
+    let raw = localStorage.getItem(key);
+    // Backward compatibility for existing data under ironmind_
+    if (!raw && key.startsWith('ironcore_')) {
+      const legacyKey = key.replace('ironcore_', 'ironmind_');
+      raw = localStorage.getItem(legacyKey);
+      if (raw) {
+        localStorage.setItem(key, raw);
+      }
+    }
     if (!raw) return fallback;
     return JSON.parse(raw) as T;
   } catch (err) {
@@ -321,7 +329,7 @@ export const StorageService = {
   // BACKUP & RESTORE
   exportBackupData(): string {
     const backup: AppDataBackup = {
-      app: 'IRONMIND',
+      app: 'IRONCORE',
       backupVersion: 1,
       exportedAt: new Date().toISOString(),
       data: {
@@ -343,10 +351,10 @@ export const StorageService = {
   importBackupData(jsonString: string): { success: boolean; message: string } {
     try {
       const parsed = JSON.parse(jsonString) as AppDataBackup;
-      if (!parsed || parsed.app !== 'IRONMIND' || !parsed.data) {
+      if (!parsed || (parsed.app !== 'IRONCORE' && parsed.app !== 'IRONMIND') || !parsed.data) {
         return {
           success: false,
-          message: 'Invalid backup file format. Expected IRONMIND backup payload.'
+          message: 'Invalid backup file format. Expected IronCore backup payload.'
         };
       }
 

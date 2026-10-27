@@ -1,5 +1,5 @@
 /**
- * IRONMIND Ad Configuration - Unity Ads
+ * IronCore Fitness Ad Configuration - Unity Ads
  * 
  * Active Configuration:
  * - Provider: Unity Ads
@@ -42,3 +42,5 @@ export const AD_CONFIG = {
   // Visual settings for development & verification
   displayTestBadge: true,
 };
+
+export const adConfig = AD_CONFIG;

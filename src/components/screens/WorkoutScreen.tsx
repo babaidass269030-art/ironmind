@@ -296,7 +296,7 @@ export const WorkoutScreen: React.FC<WorkoutScreenProps> = ({
           <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 mb-2">
             <h3 className="text-sm font-bold text-white mb-1">Weekly Training Routine</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Assign workouts to days of the week. IRONMIND automatically cues today's planned routine on your Home screen.
+              Assign workouts to days of the week. IronCore automatically cues today's planned routine on your Home screen.
             </p>
           </div>
 

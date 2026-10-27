@@ -47,7 +47,7 @@ export const PWAInstallButton: React.FC<{ compact?: boolean }> = ({ compact = fa
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                 <h3 className="text-base font-bold flex items-center gap-2">
                   <Smartphone className="w-4 h-4 text-amber-400" />
-                  Install IRONMIND on iOS
+                  Install IronCore on iOS
                 </h3>
                 <button
                   onClick={() => setShowIOSGuide(false)}
@@ -77,7 +77,7 @@ export const PWAInstallButton: React.FC<{ compact?: boolean }> = ({ compact = fa
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">
                     3
                   </span>
-                  <p>Tap <strong>Add</strong>. IRONMIND will run full-screen as a standalone native app!</p>
+                  <p>Tap <strong>Add</strong>. IronCore will run full-screen as a standalone native app!</p>
                 </div>
               </div>
               <button

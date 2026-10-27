@@ -75,10 +75,10 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }
               </div>
               <div>
                 <span className="text-xl font-extrabold font-display tracking-tight text-white block">
-                  IRONMIND
+                  IRONCORE FITNESS
                 </span>
                 <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase block">
-                  Personal Fitness Companion
+                  Gym Workout Tracker
                 </span>
               </div>
             </div>
@@ -264,7 +264,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }
             onClick={handleFinish}
             className="w-full mt-6 h-13 rounded-2xl bg-amber-500 text-black font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:bg-amber-400 active:scale-98 transition"
           >
-            <span>Start Training with IRONMIND</span>
+            <span>Start Training with IronCore</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

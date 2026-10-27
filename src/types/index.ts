@@ -191,7 +191,7 @@ export interface Achievement {
 }
 
 export interface AppDataBackup {
-  app: 'IRONMIND';
+  app: 'IRONCORE' | 'IRONMIND';
   backupVersion: number;
   exportedAt: string;
   data: {
