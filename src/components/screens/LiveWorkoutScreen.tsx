@@ -52,7 +52,29 @@ export const LiveWorkoutScreen: React.FC<LiveWorkoutScreenProps> = ({
 }) => {
   const [currentSession, setCurrentSession] = useState<WorkoutSession>(initialSession);
   const [activeExerciseIndex, setActiveExerciseIndex] = useState(0);
-  const [elapsedSeconds, setElapsedSeconds] = useState(initialSession.durationSeconds || 0);
+
+  // Wall-clock reference for drift-free real-time elapsed time calculation
+  const startTimestampRef = useRef<number>(
+    (() => {
+      if (initialSession.startedAt) {
+        const parsed = new Date(initialSession.startedAt).getTime();
+        if (!isNaN(parsed) && parsed > 0) return parsed;
+      }
+      const offsetSec = initialSession.durationSeconds || 0;
+      return Date.now() - offsetSec * 1000;
+    })()
+  );
+
+  const getRealTimeElapsed = (): number => {
+    const startMs = startTimestampRef.current;
+    if (!startMs || isNaN(startMs)) {
+      return initialSession.durationSeconds || 0;
+    }
+    const elapsed = Math.floor((Date.now() - startMs) / 1000);
+    return Math.max(elapsed, initialSession.durationSeconds || 0, 0);
+  };
+
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(getRealTimeElapsed);
   const [showRestTimer, setShowRestTimer] = useState(false);
   const [restSeconds, setRestSeconds] = useState(profile.defaultRestSeconds || 90);
   const [currentPRAlert, setCurrentPRAlert] = useState<PRAchievement | null>(null);
@@ -60,22 +82,30 @@ export const LiveWorkoutScreen: React.FC<LiveWorkoutScreenProps> = ({
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showTips, setShowTips] = useState(false);
 
-  // Auto-save session periodically & update elapsed time
+  // Real-time elapsed timer: updates state every second
   useEffect(() => {
+    // Initial sync
+    setElapsedSeconds(getRealTimeElapsed());
+
     const timer = setInterval(() => {
-      setElapsedSeconds((prev) => {
-        const next = prev + 1;
-        setCurrentSession((curr) => {
-          const updated = { ...curr, durationSeconds: next };
-          StorageService.saveActiveSession(updated);
-          return updated;
-        });
-        return next;
-      });
+      setElapsedSeconds(getRealTimeElapsed());
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
+
+  // Periodic active session persistence to storage (every 5 seconds)
+  useEffect(() => {
+    const saveTimer = setInterval(() => {
+      setCurrentSession((curr) => {
+        const updated = { ...curr, durationSeconds: elapsedSeconds };
+        StorageService.saveActiveSession(updated);
+        return updated;
+      });
+    }, 5000);
+
+    return () => clearInterval(saveTimer);
+  }, [elapsedSeconds]);
 
   const currentExerciseEntry = currentSession.exercises[activeExerciseIndex];
   const currentExerciseData = currentExerciseEntry
@@ -95,15 +125,19 @@ export const LiveWorkoutScreen: React.FC<LiveWorkoutScreenProps> = ({
     }
   }, [currentExerciseEntry, allSessions]);
 
-  // Format elapsed time (MM:SS or HH:MM:SS)
+  // Format elapsed time (MM:SS or HH:MM:SS) with padded minutes & seconds
   const formatElapsedTime = (totalSec: number) => {
-    const hrs = Math.floor(totalSec / 3600);
-    const mins = Math.floor((totalSec % 3600) / 60);
-    const secs = totalSec % 60;
+    const safeSec = Math.max(0, Math.floor(totalSec));
+    const hrs = Math.floor(safeSec / 3600);
+    const mins = Math.floor((safeSec % 3600) / 60);
+    const secs = safeSec % 60;
+    const paddedMins = mins < 10 ? `0${mins}` : `${mins}`;
+    const paddedSecs = secs < 10 ? `0${secs}` : `${secs}`;
+
     if (hrs > 0) {
-      return `${hrs}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      return `${hrs}:${paddedMins}:${paddedSecs}`;
     }
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    return `${paddedMins}:${paddedSecs}`;
   };
 
   // Stepper & input update for a specific set
@@ -369,8 +403,12 @@ export const LiveWorkoutScreen: React.FC<LiveWorkoutScreenProps> = ({
               <h2 className="text-sm font-bold text-white truncate max-w-[170px]">
                 {currentSession.name}
               </h2>
-              <div className="flex items-center gap-2 text-[11px] font-mono text-amber-400 font-semibold">
-                <Clock className="w-3 h-3" />
+              <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-400 font-semibold tracking-wider">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                <Clock className="w-3 h-3 text-amber-400/80" />
                 <span>{formatElapsedTime(elapsedSeconds)}</span>
               </div>
             </div>

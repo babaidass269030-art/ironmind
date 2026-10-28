@@ -38,7 +38,9 @@ jobs:
         run: |
           rm -f capacitor.config.ts
           echo '{ "appId": "com.ironcore.fitnesstracker", "appName": "IronCore Fitness: Gym Workout Tracker", "webDir": "dist" }' > capacitor.config.json
-          if [ ! -d "android" ]; then
+          if [ ! -d "android" ] || [ ! -f "android/gradlew" ]; then
+            echo "Android directory missing or lacks gradlew. Initializing fresh Capacitor Android platform..."
+            rm -rf android
             npx cap add android
           fi
           npx cap sync android
@@ -75,6 +77,10 @@ jobs:
           cd android
           echo "org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=512m" >> gradle.properties
           
+          # Increment versionCode and set versionName for Amazon Appstore update
+          sed -i 's/versionCode 1/versionCode 2/g' app/build.gradle
+          sed -i 's/versionName "1.0"/versionName "1.0.1"/g' app/build.gradle
+
           cat << 'EOF' >> app/build.gradle
 
           configurations.all {
@@ -86,11 +92,16 @@ jobs:
       - name: Build Unsigned Release APK
         run: |
           cd android
+          if [ ! -f "./gradlew" ]; then
+            echo "gradlew not found, generating wrapper with gradle..."
+            gradle wrapper || true
+          fi
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --no-daemon
 
       - name: Sign APK for Amazon Appstore
         run: |
+          rm -f release.keystore
           keytool -genkey -v -keystore release.keystore -alias ironcore -keyalg RSA -keysize 2048 -validity 10000 -storepass ironcore123 -keypass ironcore123 -dname "CN=IronCore, OU=App, O=IronCore Fitness, L=Kolkata, ST=WB, C=IN"
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign --ks release.keystore --ks-key-alias ironcore --ks-pass pass:ironcore123 --key-pass pass:ironcore123 --out IronCore-Amazon-Release.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
 
